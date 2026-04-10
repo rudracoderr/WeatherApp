@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./app.css";
 
 function App() {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState("New Delhi");
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   // 🌐 API CALL
-  const fetchWeather = async () => {
+  const fetchWeather = async (city = input) => {
     try {
       setLoading(true);
       setError(null);
 
       const response = await axios.get(
-        `https://api.weatherapi.com/v1/current.json?key=28a076a8c2fb46f5a1b60807262402&q=${input}&aqi=yes`
+        `https://api.weatherapi.com/v1/current.json?key=28a076a8c2fb46f5a1b60807262402&q=${city}&aqi=yes`
       );
 
       setWeatherData(response.data);
@@ -29,6 +29,10 @@ function App() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchWeather("New Delhi");
+  }, []);
 
   // 🌙 DARK BACKGROUND CHECK
   const isDarkBackground = () => {
